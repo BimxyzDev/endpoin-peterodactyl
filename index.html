@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Pterodactyl Utility</title>
+<style>
+body {
+  margin: 0;
+  font-family: Inter, system-ui, sans-serif;
+  background: #0b0b0f;
+  color: #e5e7eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.card {
+  width: 420px;
+  background: #111118;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 0 0 1px #1f2937;
+}
+h1 {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+label {
+  font-size: 12px;
+  color: #9ca3af;
+}
+input, select, button {
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 14px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #0b0b0f;
+  color: #fff;
+}
+button {
+  background: #2563eb;
+  cursor: pointer;
+}
+button:hover {
+  background: #1d4ed8;
+}
+pre {
+  background: #0b0b0f;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  max-height: 200px;
+  overflow: auto;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Pterodactyl Maintenance Tool</h1>
+
+  <label>Panel Domain</label>
+  <input id="domain" placeholder="https://panel.example.com">
+
+  <label>PTLA Key</label>
+  <input id="apikey" type="password" placeholder="ptla_xxxxx">
+
+  <label>Action</label>
+  <select id="action">
+    <option value="delete-offline">Delete Offline Servers</option>
+    <option value="delete-all">Delete All Servers</option>
+    <option value="delete-unused-users">Delete Unused Users</option>
+  </select>
+
+  <button onclick="run()">Execute</button>
+
+  <pre id="output"></pre>
+</div>
+
+<script>
+async function run() {
+  const body = {
+    domain: domain.value,
+    apikey: apikey.value,
+    action: action.value
+  };
+
+  const res = await fetch("/api/ptero", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body)
+  });
+
+  output.textContent = JSON.stringify(await res.json(), null, 2);
+}
+</script>
+
+</body>
+  </html>
